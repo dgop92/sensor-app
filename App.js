@@ -10,14 +10,13 @@ import { Provider as PaperProvider } from "react-native-paper";
 import AppLoading from "expo-app-loading";
 import React from "react";
 import {
-  Platform,
-  StatusBar as NativeStatusBar,
   StyleSheet,
   View,
 } from "react-native";
 import { theme } from "./src/styles";
 import MyAppbar from "./src/components/base/MyAppbar";
 import MyStatusBar from "./src/components/base/MyStatusBar";
+import HomeScreen from "./src/screens/home/HomeScreen";
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -35,6 +34,7 @@ export default function App() {
         <View style={styles.container}>
           <MyStatusBar backgroundColor="#263645" barStyle="light-content" />
           <MyAppbar />
+          <HomeScreen />
         </View>
       </PaperProvider>
     );
