@@ -1,37 +1,23 @@
 import React from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import SensorItem from "./SensorItem";
+import { sensorsData } from "./homeData"
 
-const sensorsData = [
-  {
-    name: "Acelerómetro",
-    path: require("../../../assets/home-screen/acce-icon.png"),
-  },
-  {
-    name: "Giroscopio",
-    path: require("../../../assets/home-screen/gyros-icon.png"),
-  },
-  {
-    name: "Magnetómetro",
-    path: require("../../../assets/home-screen/magnet-icon.png"),
-  },
-  {
-    name: "Barómetro",
-    path: require("../../../assets/home-screen/bar-icon.png"),
-  },
-];
-
-export default function HomeScreen() {
+export default function HomeScreen({ navigation }) {
   return (
     <ScrollView contentContainerStyle={styles.scroll}>
       <View style={styles.homePage}>
         <View style={styles.sensorContainer}>
           {sensorsData.map((sensorItemData, index) => (
-            <SensorItem
+            <TouchableOpacity activeOpacity={0.7}
               key={index}
-              name={sensorItemData.name}
-              path={sensorItemData.path}
-            />
+              onPress={() => navigation.navigate(sensorItemData.pageName)}
+            >
+              <SensorItem
+                name={sensorItemData.name}
+                path={sensorItemData.path}
+              />
+            </TouchableOpacity>
           ))}
         </View>
       </View>
@@ -57,7 +43,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   scroll: {
-    flexGrow: 1, 
-    justifyContent: 'center',
-  }
+    flexGrow: 1,
+    justifyContent: "center",
+  },
 });

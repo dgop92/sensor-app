@@ -41,6 +41,7 @@ const theme = {
     
     text: "#333333",
     secondaryText: "757575",
+    whiteText: "#fff",
     
     notification: "2D4052",
 
