@@ -2,7 +2,6 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "./home/HomeScreen";
-import AccelerometerScreen from "./accelerometer/AccelerometerScreen";
 import { sensorsData } from "./home/homeData";
 import { useTheme } from "react-native-paper";
 

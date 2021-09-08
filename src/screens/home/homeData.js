@@ -1,7 +1,7 @@
-import AccelerometerScreen from "../accelerometer/AccelerometerScreen";
-import BarometerScreen from "../barometer/BarometerScreen";
-import GyroscopeScreen from "../gyroscope/GyroscopeScreen";
-import MagnetometerScreen from "../magnetometer/MagnetometerScreen";
+import AccelerometerScreen from "../sensors/AccelerometerScreen";
+import BarometerScreen from "../sensors/BarometerScreen";
+import GyroscopeScreen from "../sensors/GyroscopeScreen";
+import MagnetometerScreen from "../sensors/MagnetometerScreen";
 
 export const sensorsData = [
   {
