@@ -61,12 +61,12 @@ export function useVectorialSensor({
   };
 
   const subscribe = () => {
-    if (!sensorClass.hasListeners()){
+    if (!sensorClass.hasListeners()) {
       setSubscription(true);
       sensorClass.setUpdateInterval(timeInterval);
       sensorClass.addListener((nativeSensorData) => {
         setSensorData(nativeSensorData);
-      })
+      });
     }
   };
 
@@ -76,7 +76,7 @@ export function useVectorialSensor({
   };
 
   useEffect(() => {
-    subscribe()
+    subscribe();
     return () => unsubscribe();
   }, []);
 
@@ -84,7 +84,7 @@ export function useVectorialSensor({
     subscribe: subscribe,
     unsubscribe: unsubscribe,
     subscription: subscription,
-  }
+  };
 
   return {
     sensorData,

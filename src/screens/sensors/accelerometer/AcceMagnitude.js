@@ -1,19 +1,19 @@
 import { Accelerometer } from "expo-sensors";
-import React from "react";
+import React, { useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import SensorBottomBar from "../components/SensorBottomBar";
 import MagnitudeCard from "../components/MagnitudeCard";
 import { useVectorialSensor } from "../sensorUtils";
+import SensorIntervalDialog from "../components/SensorIntervalDialog";
 
 export default function AcceMagnitude() {
-  /* const { sensorData, subscriptionTools } = useVectorialSensor({
-    sensorClass: Accelerometer,
-  }); */
-  const sensorData = {
-    x: 3,
-    y: 3,
-    z: 3,
-  };
+  const { sensorData, subscriptionTools, changeTimeInterval, timeInterval } =
+    useVectorialSensor({
+      sensorClass: Accelerometer,
+    });
+  const [visible, setVisible] = useState(false);
+
+  const showDialog = () => setVisible(true);
 
   return (
     <View style={styles.container}>
@@ -21,14 +21,18 @@ export default function AcceMagnitude() {
         <MagnitudeCard name="X" value={sensorData.x} units="G" />
         <MagnitudeCard name="Y" value={sensorData.y} units="G" />
         <MagnitudeCard name="Z" value={sensorData.z} units="G" />
-        <MagnitudeCard name="X" value={sensorData.x} units="G" />
-        <MagnitudeCard name="a" value={sensorData.y} units="G" />
-        <MagnitudeCard name="Z" value={sensorData.z} units="G" />
-        <MagnitudeCard name="X" value={sensorData.x} units="G" />
-        <MagnitudeCard name="Y" value={sensorData.y} units="G" />
-        <MagnitudeCard name="Z" value={sensorData.z} units="G" />
       </ScrollView>
-      <SensorBottomBar subscriptionTools={sensorData} />
+      <SensorIntervalDialog
+        dialogVisible={visible}
+        setDialogVisible={setVisible}
+        timeInterval={timeInterval}
+        changeTimeInterval={changeTimeInterval}
+      />
+      <SensorBottomBar
+        onIntervaTimeText={showDialog}
+        timeInterval={timeInterval}
+        subscriptionTools={subscriptionTools}
+      />
     </View>
   );
 }

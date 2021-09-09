@@ -2,14 +2,19 @@ import React, { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import { FAB, Surface, useTheme } from "react-native-paper";
 
-export default function SensorBottomBar({ subscriptionTools }) {
+export default function SensorBottomBar({
+  subscriptionTools,
+  onIntervaTimeText,
+  timeInterval,
+}) {
   const [iconName, setIconName] = useState("pause");
   const { colors } = useTheme();
   const styles = makeStyles(colors);
 
   const switchSensor = () => {
+    console.log(`click un su ${subscriptionTools.subscription}`)
     if (subscriptionTools.subscription) {
-      subscriptionTools.unsuscribe();
+      subscriptionTools.unsubscribe();
       setIconName("play");
     } else {
       subscriptionTools.subscribe();
@@ -19,8 +24,11 @@ export default function SensorBottomBar({ subscriptionTools }) {
 
   return (
     <Surface style={styles.container}>
-      <TouchableOpacity activeOpacity={0.7} onPress={() => {console.log("yes")}}>
-        <Text style={styles.intervalTime}>1000 ms</Text>
+      <TouchableOpacity
+        activeOpacity={0.7}
+        onPress={onIntervaTimeText}
+      >
+        <Text style={styles.intervalTime}>{timeInterval} ms</Text>
       </TouchableOpacity>
       <FAB style={styles.fab} icon={iconName} onPress={switchSensor} />
     </Surface>
