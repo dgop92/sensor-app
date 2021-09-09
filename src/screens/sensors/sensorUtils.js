@@ -2,57 +2,94 @@ import { useEffect, useState } from "react";
 import { roundTo2 } from "../../utils";
 
 // interval in milliseconds
-export function useVectorialSensor({ sensorClass, deltaTime = 1000 }) {
-  const [sensorData, setSensorData] = useState({
-    xPrevious: -roundTo2(deltaTime / 1000),
+export function usePlotVectorialSensor({ sensorData, timeInterval }) {
+  const [plotData, setPlotData] = useState({
+    xPrevious: -roundTo2(timeInterval / 1000),
     intervalValues: [],
     sensorComponents: [],
   });
-  const [subscription, setSubscription] = useState(null);
+
+  useEffect(() => {
+    setPlotData((oldPlotData) => {
+      const rawx = oldPlotData.xPrevious + roundTo2(timeInterval / 1000);
+      const x = roundTo2(rawx);
+
+      const components = {
+        x: roundTo2(nativeSensorData.x),
+        y: roundTo2(nativeSensorData.y),
+        z: roundTo2(nativeSensorData.z),
+      };
+
+      const oldSensorComponents = oldPlotData.sensorComponents;
+      const oldIntervalValues = oldPlotData.intervalValues;
+
+      if (oldSensorComponents.length === 10) {
+        oldSensorComponents.shift();
+        oldIntervalValues.shift();
+      }
+
+      return {
+        xPrevious: x,
+        intervalValues: [...oldIntervalValues, x],
+        sensorComponents: [...oldSensorComponents, components],
+      };
+    });
+  }, [sensorData, timeInterval]);
+
+  return { plotData };
+}
+
+export function useVectorialSensor({
+  sensorClass,
+  initialTimeInterval = 1000,
+}) {
+  const [sensorData, setSensorData] = useState({
+    x: 0,
+    y: 0,
+    z: 0,
+  });
+  const [subscription, setSubscription] = useState(false);
+  const [timeInterval, setTimeInterval] = useState(initialTimeInterval);
+
+  // interval in milliseconds
+  const changeTimeInterval = (newInterval) => {
+    if (newInterval < 100) {
+      newInterval = 100;
+    }
+    sensorClass.setUpdateInterval(newInterval);
+    setTimeInterval(newInterval);
+  };
 
   const subscribe = () => {
-    console.log("suscribe");
-    sensorClass.setUpdateInterval(deltaTime);
-    setSubscription(
+    if (!sensorClass.hasListeners()){
+      setSubscription(true);
+      sensorClass.setUpdateInterval(timeInterval);
       sensorClass.addListener((nativeSensorData) => {
-        setSensorData((oldSensorData) => {
-          const rawx = oldSensorData.xPrevious + roundTo2(deltaTime / 1000);
-          const x = roundTo2(rawx);
-
-          const components = {
-            x: roundTo2(nativeSensorData.x),
-            y: roundTo2(nativeSensorData.y),
-            z: roundTo2(nativeSensorData.z),
-          };
-          
-          const oldSensorComponents = oldSensorData.sensorComponents;
-          const oldIntervalValues = oldSensorData.intervalValues;
-
-          if (oldSensorComponents.length === 10) {
-            oldSensorComponents.shift();
-            oldIntervalValues.shift();
-          }
-
-          return {
-            xPrevious: x,
-            intervalValues: [...oldIntervalValues, x],
-            sensorComponents: [...oldSensorComponents, components],
-          };
-        });
+        setSensorData(nativeSensorData);
       })
-    );
+    }
   };
 
   const unsubscribe = () => {
-    console.log("unsus by ");
-    subscription && subscription.remove();
-    setSubscription(null);
+    setSubscription(false);
+    sensorClass.removeAllListeners();
   };
 
   useEffect(() => {
-    subscribe();
+    subscribe()
     return () => unsubscribe();
   }, []);
 
-  return { sensorData, subscribe, unsubscribe };
+  const subscriptionTools = {
+    subscribe: subscribe,
+    unsubscribe: unsubscribe,
+    subscription: subscription,
+  }
+
+  return {
+    sensorData,
+    timeInterval,
+    subscriptionTools,
+    changeTimeInterval,
+  };
 }
