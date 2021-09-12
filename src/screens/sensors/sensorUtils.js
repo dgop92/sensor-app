@@ -1,44 +1,6 @@
 import { useEffect, useState } from "react";
 import { roundTo2 } from "../../utils";
 
-// interval in milliseconds
-export function usePlotVectorialSensor({ sensorData, timeInterval }) {
-  const [plotData, setPlotData] = useState({
-    xPrevious: -roundTo2(timeInterval / 1000),
-    intervalValues: [],
-    sensorComponents: [],
-  });
-
-  useEffect(() => {
-    setPlotData((oldPlotData) => {
-      const rawx = oldPlotData.xPrevious + roundTo2(timeInterval / 1000);
-      const x = roundTo2(rawx);
-
-      const components = {
-        x: roundTo2(nativeSensorData.x),
-        y: roundTo2(nativeSensorData.y),
-        z: roundTo2(nativeSensorData.z),
-      };
-
-      const oldSensorComponents = oldPlotData.sensorComponents;
-      const oldIntervalValues = oldPlotData.intervalValues;
-
-      if (oldSensorComponents.length === 10) {
-        oldSensorComponents.shift();
-        oldIntervalValues.shift();
-      }
-
-      return {
-        xPrevious: x,
-        intervalValues: [...oldIntervalValues, x],
-        sensorComponents: [...oldSensorComponents, components],
-      };
-    });
-  }, [sensorData, timeInterval]);
-
-  return { plotData };
-}
-
 export function useVectorialSensor({
   sensorClass,
   initialTimeInterval = 1000,
@@ -75,11 +37,6 @@ export function useVectorialSensor({
     sensorClass.removeAllListeners();
   };
 
-  useEffect(() => {
-    subscribe();
-    return () => unsubscribe();
-  }, []);
-
   const subscriptionTools = {
     subscribe: subscribe,
     unsubscribe: unsubscribe,
@@ -92,4 +49,42 @@ export function useVectorialSensor({
     subscriptionTools,
     changeTimeInterval,
   };
+}
+
+// interval in milliseconds
+export function usePlotVectorialSensor({ sensorData, timeInterval }) {
+  const [plotData, setPlotData] = useState({
+    xPrevious: -roundTo2(timeInterval / 1000),
+    intervalValues: [],
+    sensorComponents: [],
+  });
+
+  useEffect(() => {
+    setPlotData((oldPlotData) => {
+      const rawx = oldPlotData.xPrevious + roundTo2(timeInterval / 1000);
+      const x = roundTo2(rawx);
+
+      const components = {
+        x: roundTo2(sensorData.x),
+        y: roundTo2(sensorData.y),
+        z: roundTo2(sensorData.z),
+      };
+
+      const oldSensorComponents = oldPlotData.sensorComponents;
+      const oldIntervalValues = oldPlotData.intervalValues;
+
+      if (oldSensorComponents.length === 10) {
+        oldSensorComponents.shift();
+        oldIntervalValues.shift();
+      }
+
+      return {
+        xPrevious: x,
+        intervalValues: [...oldIntervalValues, x],
+        sensorComponents: [...oldSensorComponents, components],
+      };
+    });
+  }, [sensorData, timeInterval]);
+
+  return { plotData };
 }

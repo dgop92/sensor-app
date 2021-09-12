@@ -1,24 +1,24 @@
 import React from "react";
 import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import SensorItem from "./SensorItem";
-import { sensorsData } from "../sensors/sensorRouteData";
+import { sensorsRouteData } from "../sensors/sensorData";
 
 export default function HomeScreen({ navigation }) {
   return (
     <ScrollView contentContainerStyle={styles.scroll}>
       <View style={styles.homePage}>
         <View style={styles.sensorContainer}>
-          {sensorsData.map((sensorItemData, index) => (
+          {sensorsRouteData.map((sensorRoute, index) => (
             <TouchableOpacity
               activeOpacity={0.7}
               key={index}
               onPress={() =>
-                navigation.navigate("SensorMode", sensorItemData.params)
+                navigation.navigate("SensorMode", sensorRoute.params)
               }
             >
               <SensorItem
-                name={sensorItemData.name}
-                path={sensorItemData.path}
+                name={sensorRoute.name}
+                path={sensorRoute.path}
               />
             </TouchableOpacity>
           ))}

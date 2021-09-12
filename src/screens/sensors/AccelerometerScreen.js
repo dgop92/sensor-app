@@ -9,7 +9,6 @@ export default function AccelerometerScreen() {
   const isSensorAvaliable = async () => {
     try {
       const isAvailable = await Accelerometer.isAvailableAsync();
-      console.log(typeof isAvailable);
       return isAvailable;
     } catch (error) {
       return false;

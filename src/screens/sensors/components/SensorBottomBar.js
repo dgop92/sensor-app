@@ -7,12 +7,11 @@ export default function SensorBottomBar({
   onIntervaTimeText,
   timeInterval,
 }) {
-  const [iconName, setIconName] = useState("pause");
+  const [iconName, setIconName] = useState("play");
   const { colors } = useTheme();
   const styles = makeStyles(colors);
 
   const switchSensor = () => {
-    console.log(`click un su ${subscriptionTools.subscription}`)
     if (subscriptionTools.subscription) {
       subscriptionTools.unsubscribe();
       setIconName("play");
