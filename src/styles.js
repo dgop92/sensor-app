@@ -2,22 +2,22 @@ import { configureFonts, DefaultTheme } from "react-native-paper";
 
 const fontStack = {
   regular: {
-      fontFamily: 'Lato_400Regular',
-      fontWeight: 'normal',
-    },
-    medium: {
-      fontFamily: 'Lato_700Bold',
-      fontWeight: 'normal',
-    },
-    light: {
-      fontFamily: 'Lato_300Light',
-      fontWeight: 'normal',
-    },
-    thin: {
-      fontFamily: 'Lato_100Thin',
-      fontWeight: 'normal',
-    },
-}
+    fontFamily: "Lato_400Regular",
+    fontWeight: "normal",
+  },
+  medium: {
+    fontFamily: "Lato_700Bold",
+    fontWeight: "normal",
+  },
+  light: {
+    fontFamily: "Lato_300Light",
+    fontWeight: "normal",
+  },
+  thin: {
+    fontFamily: "Lato_100Thin",
+    fontWeight: "normal",
+  },
+};
 
 const fontConfig = {
   web: fontStack,
@@ -49,4 +49,4 @@ const theme = {
   },
 };
 
-export { theme }
+export { theme };

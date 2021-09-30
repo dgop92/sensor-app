@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { Surface, Title, useTheme, Text } from "react-native-paper";
+import { Surface, useTheme, Text } from "react-native-paper";
 import { roundTo2 } from "../../../utils";
 
 export default function MagnitudeCard({ name, value, units }) {
