@@ -18,7 +18,8 @@ module.exports = {
     "sourceType": "module"
   },
   "plugins": [
-    "react"
+    "react",
+    "react-hooks",
   ],
   "rules": {
     "react/prop-types": 0,
@@ -37,6 +38,8 @@ module.exports = {
     "semi": [
       "error",
       "always"
-    ]
+    ],
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
   }
 };

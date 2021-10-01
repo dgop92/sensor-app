@@ -3,7 +3,8 @@ import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import { FAB, Surface, useTheme } from "react-native-paper";
 
 export default function SensorBottomBar({
-  subscriptionTools,
+  sensorClass,
+  onSensorData,
   onIntervaTimeText,
   timeInterval,
 }) {
@@ -12,21 +13,21 @@ export default function SensorBottomBar({
   const styles = makeStyles(colors);
 
   const switchSensor = () => {
-    if (subscriptionTools.subscription) {
-      subscriptionTools.unsubscribe();
+    if (sensorClass.hasListeners()) {
+      sensorClass.removeAllListeners();
+      console.log("unsus");
       setIconName("play");
     } else {
-      subscriptionTools.subscribe();
+      console.log("sus");
+      sensorClass.setUpdateInterval(timeInterval);
+      sensorClass.addListener(onSensorData);
       setIconName("pause");
     }
   };
 
   return (
     <Surface style={styles.container}>
-      <TouchableOpacity
-        activeOpacity={0.7}
-        onPress={onIntervaTimeText}
-      >
+      <TouchableOpacity activeOpacity={0.7} onPress={onIntervaTimeText}>
         <Text style={styles.intervalTime}>{timeInterval} ms</Text>
       </TouchableOpacity>
       <FAB style={styles.fab} icon={iconName} onPress={switchSensor} />

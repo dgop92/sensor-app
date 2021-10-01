@@ -10,7 +10,6 @@ export function useVectorialSensor({
     y: 0,
     z: 0,
   });
-  const [subscription, setSubscription] = useState(false);
   const [timeInterval, setTimeInterval] = useState(initialTimeInterval);
 
   // interval in milliseconds
@@ -22,37 +21,17 @@ export function useVectorialSensor({
     setTimeInterval(newInterval);
   };
 
-  const subscribe = () => {
-    if (!sensorClass.hasListeners()) {
-      setSubscription(true);
-      sensorClass.setUpdateInterval(timeInterval);
-      sensorClass.addListener((nativeSensorData) => {
-        setSensorData(nativeSensorData);
-      });
-    }
-  };
-
-  const unsubscribe = () => {
-    setSubscription(false);
-    sensorClass.removeAllListeners();
-  };
-
-  const subscriptionTools = {
-    subscribe: subscribe,
-    unsubscribe: unsubscribe,
-    subscription: subscription,
-  };
-
   useEffect(() => {
     return () => {
-      unsubscribe();
+      console.log("unsus");
+      sensorClass.removeAllListeners();
     };
-  }, []);
+  }, [sensorClass]);
 
   return {
     sensorData,
+    setSensorData,
     timeInterval,
-    subscriptionTools,
     changeTimeInterval,
   };
 }

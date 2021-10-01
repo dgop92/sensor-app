@@ -7,13 +7,17 @@ import { useVectorialSensor } from "../sensorUtils";
 import SensorIntervalDialog from "../components/SensorIntervalDialog";
 
 export default function AcceMagnitude() {
-  const { sensorData, subscriptionTools, changeTimeInterval, timeInterval } =
+  const { sensorData, setSensorData, changeTimeInterval, timeInterval } =
     useVectorialSensor({
       sensorClass: Accelerometer,
     });
   const [visible, setVisible] = useState(false);
 
   const showDialog = () => setVisible(true);
+
+  const onSensorData = (data) => {
+    setSensorData(data);
+  };
 
   return (
     <View style={styles.container}>
@@ -31,7 +35,8 @@ export default function AcceMagnitude() {
       <SensorBottomBar
         onIntervaTimeText={showDialog}
         timeInterval={timeInterval}
-        subscriptionTools={subscriptionTools}
+        sensorClass={Accelerometer}
+        onSensorData={onSensorData}
       />
     </View>
   );

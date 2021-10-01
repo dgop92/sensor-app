@@ -11,10 +11,15 @@ import { seriesColors } from "../sensorData";
 import { roundTo2 } from "../../../utils";
 
 export default function AccePlot() {
-  const { sensorData, subscriptionTools, changeTimeInterval, timeInterval } =
+  const { sensorData, setSensorData, changeTimeInterval, timeInterval } =
     useVectorialSensor({
       sensorClass: Accelerometer,
     });
+
+  const onSensorData = (data) => {
+    setSensorData(data);
+  };
+
   const { plotData } = usePlotVectorialSensor({ sensorData, timeInterval });
 
   const [chartHeight, setChartHeight] = useState(200);
@@ -70,7 +75,8 @@ export default function AccePlot() {
       <SensorBottomBar
         onIntervaTimeText={showDialog}
         timeInterval={timeInterval}
-        subscriptionTools={subscriptionTools}
+        sensorClass={Accelerometer}
+        onSensorData={onSensorData}
       />
     </View>
   );
