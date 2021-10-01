@@ -43,6 +43,12 @@ export function useVectorialSensor({
     subscription: subscription,
   };
 
+  useEffect(() => {
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
   return {
     sensorData,
     timeInterval,
