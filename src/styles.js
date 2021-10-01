@@ -35,17 +35,17 @@ const theme = {
     primaryLight2: "#7F9CB8",
     primaryDark1: "#2D4052",
     primaryDark2: "#263645",
-    background: "F8FAFB",
+    background: "#F8FAFB",
     accent: "#3B4664",
     dividerColor: "#BDBDBD",
-    
+
     text: "#333333",
     secondaryText: "757575",
     whiteText: "#fff",
-    
+
     notification: "2D4052",
 
-    fonts: configureFonts(fontConfig)
+    fonts: configureFonts(fontConfig),
   },
 };
 

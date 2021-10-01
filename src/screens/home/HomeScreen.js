@@ -17,7 +17,7 @@ export default function HomeScreen({ navigation }) {
               }
             >
               <SensorItem
-                name={sensorRoute.name}
+                name={sensorRoute.params.name}
                 path={sensorRoute.path}
               />
             </TouchableOpacity>
