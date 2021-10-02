@@ -1,6 +1,8 @@
-import React, { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { Accelerometer } from "expo-sensors";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, ToastAndroid, View } from "react-native";
 import { Surface, Button, Title, Menu, Text } from "react-native-paper";
+import { useSensorRecord } from "../sensorUtils";
 
 const timeIntervalOptions = [1000, 500, 100];
 const numRecordsOptions = [100, 50, 10];
@@ -14,10 +16,19 @@ const openMenu = (setMenu) => {
 };
 
 export default function AcceRecord() {
+  const [recording, setRecording] = useState(false);
+
   const [timeInterval, setTimeInterval] = useState(1000);
   const [numRecords, setNumRecords] = useState(10);
   const [intervalMenu, setIntervalMenu] = useState(false);
   const [numRecordsMenu, setNumRecordsMenu] = useState(false);
+
+  const onFinish = (records) => {
+    console.log("YEY");
+    console.log(records);
+    setRecording(false);
+    ToastAndroid.show("Datos guardados exitosamente", ToastAndroid.SHORT);
+  };
 
   const configItems = [
     {
@@ -48,39 +59,88 @@ export default function AcceRecord() {
 
   return (
     <View style={styles.container}>
-      <Surface style={styles.cardContainer}>
-        <Title style={styles.title}>Configurar grabación</Title>
-
-        {configItems.map((configItem, index) => (
-          <View key={index} style={styles.configContainer}>
-            <Menu
-              visible={configItem.menuState}
-              onDismiss={configItem.close}
-              anchor={
-                <Button uppercase={false} mode="text" onPress={configItem.open}>
-                  {configItem.buttonMessage}
-                </Button>
-              }
-            >
-              {configItem.menuOptions.map((opt) => (
-                <Menu.Item
-                  key={opt}
-                  onPress={() => configItem.updateOption(opt)}
-                  title={`${opt}`}
-                />
-              ))}
-            </Menu>
-            <Text style={styles.configItemText}>
-              {configItem.currentOption}
-            </Text>
-          </View>
-        ))}
-
-        <View style={styles.recordButtonContainer}>
-          <Button mode="text">Empezar</Button>
-        </View>
-      </Surface>
+      {recording ? (
+        <RecordCard
+          setRecording={setRecording}
+          numRecords={numRecords}
+          timeInterval={timeInterval}
+          onFinish={onFinish}
+        />
+      ) : (
+        <InitCard configItems={configItems} setRecording={setRecording} />
+      )}
     </View>
+  );
+}
+
+function InitCard({ configItems, setRecording }) {
+  return (
+    <Surface style={styles.cardContainer}>
+      <Title style={styles.title}>Configurar grabación</Title>
+
+      {configItems.map((configItem, index) => (
+        <View key={index} style={styles.configContainer}>
+          <Menu
+            visible={configItem.menuState}
+            onDismiss={configItem.close}
+            anchor={
+              <Button uppercase={false} mode="text" onPress={configItem.open}>
+                {configItem.buttonMessage}
+              </Button>
+            }
+          >
+            {configItem.menuOptions.map((opt) => (
+              <Menu.Item
+                key={opt}
+                onPress={() => configItem.updateOption(opt)}
+                title={`${opt}`}
+              />
+            ))}
+          </Menu>
+          <Text style={styles.configItemText}>{configItem.currentOption}</Text>
+        </View>
+      ))}
+
+      <View style={styles.recordButtonContainer}>
+        <Button onPress={() => setRecording(true)} mode="text">
+          Empezar
+        </Button>
+      </View>
+    </Surface>
+  );
+}
+
+function RecordCard({ setRecording, numRecords, timeInterval, onFinish }) {
+  const { records, setRecords } = useSensorRecord({
+    sensorClass: Accelerometer,
+    maxRecord: numRecords,
+    onFinish: onFinish,
+  });
+
+  useEffect(() => {
+    console.log("start !");
+    Accelerometer.setUpdateInterval(timeInterval);
+    Accelerometer.addListener((sensorData) =>
+      setRecords((oldRecords) => [...oldRecords, sensorData])
+    );
+    return () => {
+      Accelerometer.removeAllListeners();
+      console.log("bye bye");
+    };
+  }, [setRecords, timeInterval]);
+
+  return (
+    <Surface style={styles.cardContainer}>
+      <Title style={styles.title}>Grabando</Title>
+      <Text style={styles.recordsTexts}>
+        Registros {records.length} / {numRecords}
+      </Text>
+      <View style={styles.recordButtonContainer}>
+        <Button onPress={() => setRecording(false)} mode="text">
+          Detener
+        </Button>
+      </View>
+    </Surface>
   );
 }
 
@@ -116,5 +176,8 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row-reverse",
     marginTop: 16,
+  },
+  recordsTexts: {
+    paddingLeft: 12,
   },
 });
