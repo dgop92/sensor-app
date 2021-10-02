@@ -8,6 +8,7 @@ export const sensorsRouteData = [
       sensorKey: "A",
       magnitudePageName: "AcceMagnitude",
       plotPageName: "AccePlot",
+      recordPageName: "AcceRecord",
     },
   },
 ];

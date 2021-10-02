@@ -19,6 +19,13 @@ const sensorCardData = [
       "Lorem ipsum dolor sit amet consectetur adipisicing elit Debitis, praesentium lorem10.",
     pageNameKey: "plotPageName",
   },
+  {
+    title: "Grabar datos",
+    imageSource: require("../../../assets/sensor-mode-screen/floppy-disk.png"),
+    description:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit Debitis, praesentium lorem10.",
+    pageNameKey: "recordPageName",
+  },
 ];
 
 export default function SensorModeScreen({ route, navigation }) {

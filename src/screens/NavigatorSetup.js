@@ -6,6 +6,7 @@ import AcceMagnitude from "./sensors/accelerometer/AcceMagnitude";
 import AccePlot from "./sensors/accelerometer/AccePlot";
 import SensorModeScreen from "./sensors/SensorModeScreen";
 import { useTheme } from "react-native-paper";
+import AcceRecord from "./sensors/accelerometer/AcceRecord";
 
 const Stack = createNativeStackNavigator();
 
@@ -41,6 +42,11 @@ export default function NavigatorSetup() {
         <Stack.Screen
           name="AccePlot"
           component={AccePlot}
+          options={{ title: "Acelerómetro" }}
+        />
+        <Stack.Screen
+          name="AcceRecord"
+          component={AcceRecord}
           options={{ title: "Acelerómetro" }}
         />
       </Stack.Navigator>

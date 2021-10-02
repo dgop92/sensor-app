@@ -73,3 +73,26 @@ export function usePlotVectorialSensor({ sensorData, timeInterval }) {
 
   return { plotData };
 }
+
+export function useSensorRecord({
+  sensorData,
+  sensorClass,
+  maxRecord,
+  onFinish,
+}) {
+  const [records, setRecords] = useState([]);
+
+  useEffect(() => {
+    setRecords((records) => [...records, sensorData]);
+  }, [sensorData]);
+
+  useEffect(() => {
+    if (records.length >= maxRecord) {
+      sensorClass.removeAllListeners();
+      onFinish(records);
+      setRecords([]);
+    }
+  }, [records, sensorClass, maxRecord, onFinish]);
+
+  return { records };
+}
