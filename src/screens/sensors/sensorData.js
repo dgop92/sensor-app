@@ -1,4 +1,4 @@
-import { Accelerometer } from "expo-sensors";
+import { Accelerometer, Magnetometer } from "expo-sensors";
 
 export const sensorKeys = {
   ACCELEROMETER: "A",
@@ -17,6 +17,16 @@ export const sensorsRouteData = [
       recordPageName: "AcceRecord",
     },
   },
+  {
+    path: require("../../../assets/home-screen/magnet-icon.png"),
+    params: {
+      name: "Magnetómetro",
+      sensorKey: sensorKeys.MAGNETOMETER,
+      magnitudePageName: "MagneMagnitude",
+      plotPageName: "MagnePlot",
+      recordPageName: "MagneRecord",
+    },
+  },
 ];
 
 export const seriesColors = {
@@ -27,4 +37,5 @@ export const seriesColors = {
 
 export const sensorsClasess = {
   A: Accelerometer,
+  M: Magnetometer,
 };

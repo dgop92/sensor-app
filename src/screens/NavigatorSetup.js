@@ -2,11 +2,10 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "./home/HomeScreen";
-import AcceMagnitude from "./sensors/accelerometer/AcceMagnitude";
-import AccePlot from "./sensors/accelerometer/AccePlot";
 import SensorModeScreen from "./sensors/SensorModeScreen";
 import { useTheme } from "react-native-paper";
-import AcceRecord from "./sensors/accelerometer/AcceRecord";
+import acceScreens from "./sensors/accelerometer";
+import magneScreens from "./sensors/magnetometer";
 
 const Stack = createNativeStackNavigator();
 
@@ -34,21 +33,23 @@ export default function NavigatorSetup() {
           component={SensorModeScreen}
           options={{ title: "Modo del sensor" }}
         />
-        <Stack.Screen
-          name="AcceMagnitude"
-          component={AcceMagnitude}
-          options={{ title: "Acelerómetro" }}
-        />
-        <Stack.Screen
-          name="AccePlot"
-          component={AccePlot}
-          options={{ title: "Acelerómetro" }}
-        />
-        <Stack.Screen
-          name="AcceRecord"
-          component={AcceRecord}
-          options={{ title: "Acelerómetro" }}
-        />
+
+        {acceScreens.map((screenData, index) => (
+          <Stack.Screen
+            key={index}
+            name={screenData.name}
+            component={screenData.component}
+            options={{ title: "Acelerómetro" }}
+          />
+        ))}
+        {magneScreens.map((screenData, index) => (
+          <Stack.Screen
+            key={index}
+            name={screenData.name}
+            component={screenData.component}
+            options={{ title: "Magnetómetro" }}
+          />
+        ))}
       </Stack.Navigator>
     </NavigationContainer>
   );
