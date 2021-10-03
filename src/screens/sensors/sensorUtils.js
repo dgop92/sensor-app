@@ -23,7 +23,6 @@ export function useVectorialSensor({
 
   useEffect(() => {
     return () => {
-      console.log("unsus");
       sensorClass.removeAllListeners();
     };
   }, [sensorClass]);
@@ -79,7 +78,6 @@ export function useSensorRecord({ sensorClass, maxRecord, onFinish }) {
 
   useEffect(() => {
     if (records.length >= maxRecord) {
-      console.log("turn off");
       sensorClass.removeAllListeners();
       onFinish(records);
       setRecords([]);

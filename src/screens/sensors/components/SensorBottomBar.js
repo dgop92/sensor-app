@@ -15,10 +15,8 @@ export default function SensorBottomBar({
   const switchSensor = () => {
     if (sensorClass.hasListeners()) {
       sensorClass.removeAllListeners();
-      console.log("unsus");
       setIconName("play");
     } else {
-      console.log("sus");
       sensorClass.setUpdateInterval(timeInterval);
       sensorClass.addListener(onSensorData);
       setIconName("pause");

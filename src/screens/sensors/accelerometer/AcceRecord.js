@@ -2,6 +2,7 @@ import { Accelerometer } from "expo-sensors";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, ToastAndroid, View } from "react-native";
 import { Surface, Button, Title, Menu, Text } from "react-native-paper";
+import { askMediaPermission, saveSensorData } from "../fileManagement";
 import { useSensorRecord } from "../sensorUtils";
 
 const timeIntervalOptions = [1000, 500, 100];
@@ -23,11 +24,17 @@ export default function AcceRecord() {
   const [intervalMenu, setIntervalMenu] = useState(false);
   const [numRecordsMenu, setNumRecordsMenu] = useState(false);
 
-  const onFinish = (records) => {
-    console.log("YEY");
-    console.log(records);
+  const onFinish = async (records) => {
     setRecording(false);
-    ToastAndroid.show("Datos guardados exitosamente", ToastAndroid.SHORT);
+    const isSuccessful = await saveSensorData(records, "A");
+    if (isSuccessful) {
+      ToastAndroid.show("Datos guardados exitosamente", ToastAndroid.SHORT);
+    } else {
+      ToastAndroid.show(
+        "Hubo un error al intentar guardar los datos ",
+        ToastAndroid.SHORT
+      );
+    }
   };
 
   const configItems = [
@@ -56,6 +63,20 @@ export default function AcceRecord() {
       currentOption: timeInterval,
     },
   ];
+
+  const aksPermission = async () => {
+    const permissionGranted = await askMediaPermission();
+    if (!permissionGranted) {
+      ToastAndroid.show(
+        "Recuerda que es necesario activar el permiso para poder guardar datos",
+        ToastAndroid.LONG
+      );
+    }
+  };
+
+  useEffect(() => {
+    aksPermission();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -118,14 +139,12 @@ function RecordCard({ setRecording, numRecords, timeInterval, onFinish }) {
   });
 
   useEffect(() => {
-    console.log("start !");
     Accelerometer.setUpdateInterval(timeInterval);
     Accelerometer.addListener((sensorData) =>
       setRecords((oldRecords) => [...oldRecords, sensorData])
     );
     return () => {
       Accelerometer.removeAllListeners();
-      console.log("bye bye");
     };
   }, [setRecords, timeInterval]);
 
