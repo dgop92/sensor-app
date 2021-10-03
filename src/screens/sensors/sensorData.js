@@ -1,11 +1,17 @@
 import { Accelerometer } from "expo-sensors";
 
+export const sensorKeys = {
+  ACCELEROMETER: "A",
+  MAGNETOMETER: "M",
+  GYROSCOPE: "G",
+};
+
 export const sensorsRouteData = [
   {
     path: require("../../../assets/home-screen/acce-icon.png"),
     params: {
       name: "Acelerómetro",
-      sensorKey: "A",
+      sensorKey: sensorKeys.ACCELEROMETER,
       magnitudePageName: "AcceMagnitude",
       plotPageName: "AccePlot",
       recordPageName: "AcceRecord",
