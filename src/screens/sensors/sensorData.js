@@ -1,4 +1,4 @@
-import { Accelerometer, Magnetometer } from "expo-sensors";
+import { Accelerometer, Gyroscope, Magnetometer } from "expo-sensors";
 
 export const sensorKeys = {
   ACCELEROMETER: "A",
@@ -27,6 +27,16 @@ export const sensorsRouteData = [
       recordPageName: "MagneRecord",
     },
   },
+  {
+    path: require("../../../assets/home-screen/gyros-icon.png"),
+    params: {
+      name: "Giroscopio",
+      sensorKey: sensorKeys.GYROSCOPE,
+      magnitudePageName: "GyroMagnitude",
+      plotPageName: "GyroPlot",
+      recordPageName: "GyroRecord",
+    },
+  },
 ];
 
 export const seriesColors = {
@@ -38,4 +48,5 @@ export const seriesColors = {
 export const sensorsClasess = {
   A: Accelerometer,
   M: Magnetometer,
+  G: Gyroscope,
 };

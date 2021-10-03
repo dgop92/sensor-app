@@ -6,6 +6,7 @@ import SensorModeScreen from "./sensors/SensorModeScreen";
 import { useTheme } from "react-native-paper";
 import acceScreens from "./sensors/accelerometer";
 import magneScreens from "./sensors/magnetometer";
+import gyroScreens from "./sensors/gyroscope";
 
 const Stack = createNativeStackNavigator();
 
@@ -48,6 +49,14 @@ export default function NavigatorSetup() {
             name={screenData.name}
             component={screenData.component}
             options={{ title: "Magnetómetro" }}
+          />
+        ))}
+        {gyroScreens.map((screenData, index) => (
+          <Stack.Screen
+            key={index}
+            name={screenData.name}
+            component={screenData.component}
+            options={{ title: "Giroscopio" }}
           />
         ))}
       </Stack.Navigator>
