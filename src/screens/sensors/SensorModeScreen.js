@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { Paragraph, Surface, Title } from "react-native-paper";
 import { sensorsClasess } from "./sensorData";
@@ -29,38 +29,51 @@ const sensorCardData = [
 ];
 
 export default function SensorModeScreen({ route, navigation }) {
-  const params = route.params;
+  const [avaliable, setAvaliable] = useState(false);
+  const [loading, setLoading] = useState(true);
 
+  const params = route.params;
   const sensorClass = sensorsClasess[params.sensorKey];
 
-  const isSensorAvaliable = async () => {
+  const isSensorAvaliable = useCallback(async () => {
     try {
       const isAvailable = await sensorClass.isAvailableAsync();
-      return isAvailable;
+      setAvaliable(isAvailable);
     } catch (error) {
-      return false;
+      setAvaliable(false);
     }
-  };
+    setLoading(false);
+  }, [setAvaliable, sensorClass]);
 
-  if (!isSensorAvaliable()) {
-    return <SensorNotAvailable sensorName={params.name} />;
+  useEffect(() => {
+    isSensorAvaliable();
+  }, [isSensorAvaliable]);
+
+  if (loading) {
+    return <SensorNotAvailable sensorName={params.name} loading={true} />;
+  } else if (avaliable) {
+    return <ModeList params={params} navigation={navigation} />;
   } else {
-    return (
-      <View>
-        {sensorCardData.map((sensorCardItem, index) => (
-          <SensorCard
-            key={index}
-            title={sensorCardItem.title}
-            imageSource={sensorCardItem.imageSource}
-            description={sensorCardItem.description}
-            navigateTo={() =>
-              navigation.navigate(params[sensorCardItem.pageNameKey])
-            }
-          />
-        ))}
-      </View>
-    );
+    return <SensorNotAvailable sensorName={params.name} />;
   }
+}
+
+function ModeList({ navigation, params }) {
+  return (
+    <View>
+      {sensorCardData.map((sensorCardItem, index) => (
+        <SensorCard
+          key={index}
+          title={sensorCardItem.title}
+          imageSource={sensorCardItem.imageSource}
+          description={sensorCardItem.description}
+          navigateTo={() =>
+            navigation.navigate(params[sensorCardItem.pageNameKey])
+          }
+        />
+      ))}
+    </View>
+  );
 }
 
 function SensorCard({ title, imageSource, description, navigateTo }) {
