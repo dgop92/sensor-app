@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, ToastAndroid, View } from "react-native";
-import { Surface, Button, Title, Menu, Text } from "react-native-paper";
+import {
+  Surface,
+  Button,
+  Title,
+  Menu,
+  Text,
+  Paragraph,
+} from "react-native-paper";
 import { askMediaPermission, saveSensorData } from "../fileManagement";
 import { useSensorRecord } from "../sensorUtils";
 
@@ -25,14 +32,14 @@ export default function GenericRecord({ sensorClass, sensorKey }) {
 
   const onFinish = async (records) => {
     setRecording(false);
-    const isSuccessful = await saveSensorData(records, sensorKey);
+    const { isSuccessful, errorMessage } = await saveSensorData(
+      records,
+      sensorKey
+    );
     if (isSuccessful) {
       ToastAndroid.show("Datos guardados exitosamente", ToastAndroid.SHORT);
     } else {
-      ToastAndroid.show(
-        "Hubo un error al intentar guardar los datos ",
-        ToastAndroid.SHORT
-      );
+      ToastAndroid.show(errorMessage, ToastAndroid.SHORT);
     }
   };
 
@@ -88,7 +95,10 @@ export default function GenericRecord({ sensorClass, sensorKey }) {
           onFinish={onFinish}
         />
       ) : (
-        <InitCard configItems={configItems} setRecording={setRecording} />
+        <React.Fragment>
+          <InitCard configItems={configItems} setRecording={setRecording} />
+          <InfoCard />
+        </React.Fragment>
       )}
     </View>
   );
@@ -127,6 +137,22 @@ function InitCard({ configItems, setRecording }) {
           Empezar
         </Button>
       </View>
+    </Surface>
+  );
+}
+
+function InfoCard() {
+  return (
+    <Surface style={styles.cardContainer}>
+      <Title style={styles.title}>Nota</Title>
+      <Paragraph style={styles.paragraph}>
+        Los datos son guardados en la carpeta SensorApp. Dependiendo de tu
+        dispositivo está se puede ubicar en la carpeta padre de tu memoria
+        interna o dentro de la carpeta Pictures.
+      </Paragraph>
+      <Paragraph style={styles.paragraph}>
+        Los datos son guardados en un archivo txt con formato csv
+      </Paragraph>
     </Surface>
   );
 }
@@ -186,6 +212,12 @@ const styles = StyleSheet.create({
     padding: 4,
     marginBottom: 16,
     paddingLeft: 12,
+  },
+  paragraph: {
+    textAlign: "left",
+    paddingLeft: 12,
+    paddingRight: 12,
+    marginBottom: 8,
   },
   configContainer: {
     display: "flex",

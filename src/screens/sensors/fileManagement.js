@@ -36,23 +36,29 @@ export async function askMediaPermission() {
 
 async function writeSensorFile(fileName, conent) {
   const perm = await MediaLibrary.getPermissionsAsync();
+  let errorMessage = "Sin Error";
+  let isSuccessful = true;
   if (perm.status === "granted") {
     await ensureDirExists();
     const fileUri = getFileUri(fileName, getDateName());
     try {
       await FileSystem.writeAsStringAsync(fileUri, conent);
       const asset = await MediaLibrary.createAssetAsync(fileUri);
-      const album = await MediaLibrary.getAlbumAsync("Download");
+      const album = await MediaLibrary.getAlbumAsync("SensorApp");
       if (album == null) {
-        await MediaLibrary.createAlbumAsync("Download", asset, false);
+        await MediaLibrary.createAlbumAsync("SensorApp", asset, false);
       } else {
         await MediaLibrary.addAssetsToAlbumAsync([asset], album, false);
       }
     } catch (error) {
-      return false;
+      errorMessage = "Hubo un error al intentar guardar los datos";
+      isSuccessful = false;
     }
+  } else {
+    errorMessage = "El permiso para escribir y leer no se ha otorgado";
+    isSuccessful = false;
   }
-  return true;
+  return { isSuccessful, errorMessage };
 }
 
 export async function saveSensorData(records, sensorName) {
