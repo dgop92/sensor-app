@@ -24,12 +24,14 @@ export default function SensorBottomBar({
   };
 
   return (
-    <Surface style={styles.container}>
-      <TouchableOpacity activeOpacity={0.7} onPress={onIntervaTimeText}>
-        <Text style={styles.intervalTime}>{timeInterval} ms</Text>
-      </TouchableOpacity>
+    <>
+      <Surface style={styles.container}>
+        <TouchableOpacity activeOpacity={0.7} onPress={onIntervaTimeText}>
+          <Text style={styles.intervalTime}>{timeInterval} ms</Text>
+        </TouchableOpacity>
+      </Surface>
       <FAB style={styles.fab} icon={iconName} onPress={switchSensor} />
-    </Surface>
+    </>
   );
 }
 
