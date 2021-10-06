@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, ToastAndroid, View } from "react-native";
+import { ScrollView, StyleSheet, ToastAndroid, View } from "react-native";
 import {
   Surface,
   Button,
@@ -95,10 +95,10 @@ export default function GenericRecord({ sensorClass, sensorKey }) {
           onFinish={onFinish}
         />
       ) : (
-        <React.Fragment>
+        <ScrollView>
           <InitCard configItems={configItems} setRecording={setRecording} />
           <InfoCard />
-        </React.Fragment>
+        </ScrollView>
       )}
     </View>
   );
@@ -148,10 +148,13 @@ function InfoCard() {
       <Paragraph style={styles.paragraph}>
         Los datos son guardados en la carpeta SensorApp. Dependiendo de tu
         dispositivo está se puede ubicar en la carpeta padre de tu memoria
-        interna o dentro de la carpeta Pictures.
+        interna o dentro de la carpeta Pictures. Es posible que no se encuentre
+        en ninguna de estas dos carpetas, no obstante, puedes encontrarla usando
+        el buscador de tu explorador de archivos.
       </Paragraph>
       <Paragraph style={styles.paragraph}>
-        Los datos son guardados en un archivo txt con formato csv
+        Los datos son guardados en un archivo txt con formato csv siguiendo el
+        encabezado x, y, z
       </Paragraph>
     </Surface>
   );
@@ -198,7 +201,6 @@ function RecordCard({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingBottom: 40,
   },
   cardContainer: {
     flexDirection: "column",

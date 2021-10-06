@@ -1,5 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import { Paragraph, Surface, Title } from "react-native-paper";
 import { sensorsClasess } from "./sensorData";
 import SensorNotAvailable from "./SensorNotAvailable";
@@ -60,18 +66,20 @@ export default function SensorModeScreen({ route, navigation }) {
 
 function ModeList({ navigation, params }) {
   return (
-    <View>
-      {sensorCardData.map((sensorCardItem, index) => (
-        <SensorCard
-          key={index}
-          title={sensorCardItem.title}
-          imageSource={sensorCardItem.imageSource}
-          description={sensorCardItem.description}
-          navigateTo={() =>
-            navigation.navigate(params[sensorCardItem.pageNameKey])
-          }
-        />
-      ))}
+    <View style={styles.sensorModePage}>
+      <ScrollView>
+        {sensorCardData.map((sensorCardItem, index) => (
+          <SensorCard
+            key={index}
+            title={sensorCardItem.title}
+            imageSource={sensorCardItem.imageSource}
+            description={sensorCardItem.description}
+            navigateTo={() =>
+              navigation.navigate(params[sensorCardItem.pageNameKey])
+            }
+          />
+        ))}
+      </ScrollView>
     </View>
   );
 }
