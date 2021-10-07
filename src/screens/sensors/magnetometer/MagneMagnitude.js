@@ -5,5 +5,7 @@ import GenericMagnitude from "../generic-screens/GenericMagnitude";
 export default function MagneMagnitude() {
   const sensorClass = sensorsClasess[sensorKeys.MAGNETOMETER];
 
-  return <GenericMagnitude sensorClass={sensorClass} units="uT" />;
+  return (
+    <GenericMagnitude sensorSymbol="B" sensorClass={sensorClass} units="uT" />
+  );
 }

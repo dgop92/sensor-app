@@ -86,3 +86,11 @@ export function useSensorRecord({ sensorClass, maxRecord, onFinish }) {
 
   return { records, setRecords };
 }
+
+export function getMagnitudeFromComponents(components) {
+  return Math.sqrt(
+    Math.pow(components.x, 2) +
+      Math.pow(components.y, 2) +
+      Math.pow(components.z, 2)
+  );
+}

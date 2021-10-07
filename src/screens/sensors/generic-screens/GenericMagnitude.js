@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import SensorBottomBar from "../components/SensorBottomBar";
 import MagnitudeCard from "../components/MagnitudeCard";
-import { useVectorialSensor } from "../sensorUtils";
+import { getMagnitudeFromComponents, useVectorialSensor } from "../sensorUtils";
 import SensorIntervalDialog from "../components/SensorIntervalDialog";
 
 export default function GenericMagnitude({
+  sensorSymbol,
   sensorClass,
   units,
   extraMagnitudeCardData = [],
@@ -22,12 +23,19 @@ export default function GenericMagnitude({
     setSensorData(data);
   };
 
+  const sensorMagnitude = getMagnitudeFromComponents(sensorData);
+
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scroll}>
         <MagnitudeCard name="X" value={sensorData.x} units={units} />
         <MagnitudeCard name="Y" value={sensorData.y} units={units} />
         <MagnitudeCard name="Z" value={sensorData.z} units={units} />
+        <MagnitudeCard
+          name={sensorSymbol}
+          value={sensorMagnitude}
+          units={units}
+        />
         {extraMagnitudeCardData.map((data, index) => (
           <MagnitudeCard
             key={index}

@@ -5,5 +5,7 @@ import GenericMagnitude from "../generic-screens/GenericMagnitude";
 export default function AcceMagnitude() {
   const sensorClass = sensorsClasess[sensorKeys.ACCELEROMETER];
 
-  return <GenericMagnitude sensorClass={sensorClass} units="G" />;
+  return (
+    <GenericMagnitude sensorSymbol="a" sensorClass={sensorClass} units="G" />
+  );
 }
