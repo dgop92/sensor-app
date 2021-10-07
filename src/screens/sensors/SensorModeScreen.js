@@ -14,22 +14,21 @@ const sensorCardData = [
   {
     title: "Magnitudes",
     imageSource: require("../../../assets/sensor-mode-screen/number-blocks.png"),
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit Debitis, praesentium lorem10.",
+    description: "Presentación de las componentes y magnitud total del sensor.",
     pageNameKey: "magnitudePageName",
   },
   {
-    title: "Grafica",
+    title: "Gráfica",
     imageSource: require("../../../assets/sensor-mode-screen/scatter.png"),
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit Debitis, praesentium lorem10.",
+      "Representación gráfica de los valores obtenidos del sensor respecto a un intervalo de tiempo.",
     pageNameKey: "plotPageName",
   },
   {
     title: "Grabar datos",
     imageSource: require("../../../assets/sensor-mode-screen/floppy-disk.png"),
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit Debitis, praesentium lorem10.",
+      "Almacenamiento de los datos recolectados de los sensores en formato csv.",
     pageNameKey: "recordPageName",
   },
 ];
